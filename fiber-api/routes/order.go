@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"errors"
 	"time"
 
 	"github.com/Esilahic/fiber-api/database"
@@ -15,7 +16,7 @@ type Order struct {
 	CreatedAt time.Time      `json:"created_at"`
 }
 
-func OrderResponse(order models.Order, user UserSerializer, product Product) Order {
+func CreateResponseOrder(order models.Order, user UserSerializer, product Product) Order {
 	return Order{ID: order.ID, User: user, Product: product, CreatedAt: order.CreatedAt}
 }
 
@@ -38,7 +39,59 @@ func CreateOrder(c *fiber.Ctx) error {
 	database.Database.Db.Create(&order)
 	responseUser := CreateUserResponse(user)
 	responseProduct := CreateResponseProduct(product)
-	responseOrder := OrderResponse(order, responseUser, responseProduct)
+	responseOrder := CreateResponseOrder(order, responseUser, responseProduct)
+
+	return c.Status(200).JSON(responseOrder)
+}
+
+func GetOrders(c *fiber.Ctx) error {
+	orders := []models.Order{}
+	database.Database.Db.Find(&orders)
+	responseOrders := []Order{}
+
+	for _, order := range orders {
+		var user models.User
+		var product models.Product
+
+		database.Database.Db.Find(&user, "id = ?", order.UserReference)
+		database.Database.Db.Find(&product, "id = ?", order.ProductReference)
+
+		responseOrder := CreateResponseOrder(order, CreateUserResponse(user), CreateResponseProduct(product))
+		responseOrders = append(responseOrders, responseOrder)
+
+	}
+
+	return c.Status(200).JSON(responseOrders)
+}
+
+func FindOrder(id int, order *models.Order) error {
+	database.Database.Db.Find(&order, "id = ?", id)
+	if order.ID == 0 {
+		return errors.New("Order not found")
+	}
+	return nil
+}
+
+func GetOrder(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	var order models.Order
+	if err != nil {
+		return c.Status(400).JSON("Cannot parse id, please provide a valid id")
+	}
+	if err := FindOrder(id, &order); err != nil {
+		return c.Status(400).JSON(err.Error())
+	}
+
+	var user models.User
+	var product models.Product
+
+	database.Database.Db.First(&user, order.UserReference)
+	database.Database.Db.First(&product, order.ProductReference)
+
+	responseUser := CreateUserResponse(user)
+	responseProduct := CreateResponseProduct(product)
+
+	responseOrder := CreateResponseOrder(order, responseUser, responseProduct)
 
 	return c.Status(200).JSON(responseOrder)
 }
