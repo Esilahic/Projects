@@ -15,7 +15,7 @@ type UserSerializer struct {
 	LastName  string `json:"last_name"`
 }
 
-func UserResponse(userModel models.User) UserSerializer {
+func CreateUserResponse(userModel models.User) UserSerializer {
 	return UserSerializer{ID: userModel.ID, FirstName: userModel.FirstName, LastName: userModel.LastName}
 }
 
@@ -25,7 +25,7 @@ func CreateUser(c *fiber.Ctx) error {
 		return c.Status(400).JSON(err.Error())
 	}
 	database.Database.Db.Create(&user)
-	responseUser := UserResponse(user)
+	responseUser := CreateUserResponse(user)
 	return c.Status(200).JSON(responseUser)
 }
 
@@ -35,7 +35,7 @@ func GetUsers(c *fiber.Ctx) error {
 	responseUsers := []UserSerializer{}
 
 	for _, user := range users {
-		responseUser := UserResponse(user)
+		responseUser := CreateUserResponse(user)
 		responseUsers = append(responseUsers, responseUser)
 	}
 	return c.Status(200).JSON(responseUsers)
@@ -58,7 +58,7 @@ func GetUser(c *fiber.Ctx) error {
 	if err := FindUser(id, &user); err != nil {
 		return c.Status(400).JSON(err.Error())
 	}
-	responseUser := UserResponse(user)
+	responseUser := CreateUserResponse(user)
 	return c.Status(200).JSON(responseUser)
 }
 
@@ -85,7 +85,7 @@ func UpdateUser(c *fiber.Ctx) error {
 	user.LastName = updateUser.LastName
 	database.Database.Db.Save(&user)
 
-	responseUser := UserResponse(user)
+	responseUser := CreateUserResponse(user)
 	return c.Status(200).JSON(responseUser)
 }
 
