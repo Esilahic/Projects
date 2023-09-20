@@ -7,7 +7,7 @@ This is a clone of bitly, a link shortening service. It is a simple web applicat
 
 ### Docker
 taken from tutorial above:
-To run this application in a docker container, run the following commands:
+Using docker to run postgres with the command below:
 ```
 $ docker run --name name-of-container -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=test -d postgres:14
 ```
