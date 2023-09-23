@@ -1,5 +1,5 @@
-//
-
+// this will work on windows with WSL however its more of a headache than i expected.
+// i will finish the project and figure out how to get this to work even better
 package main
 
 import (
