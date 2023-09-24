@@ -12,14 +12,14 @@ import (
 func main() {
 	fmt.Println("Listening for port :6379")
 
-	// listen for port 6379 return err if unsuccessful
+	// Create new server on port 6379 return err if unsuccessful
 	l, err := net.Listen("tcp", ":6379")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	// accept connection from port 6379 return err if unsuccessful
+	// Listen for port 6379 return err if unsuccessful
 	conn, err := l.Accept()
 	if err != nil {
 		fmt.Println(err)
@@ -29,7 +29,7 @@ func main() {
 	// closing connection
 	defer conn.Close()
 
-	// infinite loop to read client msg, then respond
+	// infinite loop to read client msg, then respond with OK
 	for {
 		buf := make([]byte, 1024)
 
