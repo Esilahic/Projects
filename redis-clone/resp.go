@@ -33,7 +33,7 @@ func NewResp(rd io.Reader) *Resp {
 	return &Resp{reader: bufio.NewReader(rd)}
 }
 
-// Read 1 byte sequentially until we reach \r, cut off last 2bytes (CRLF), return line and # of bytes
+// Read 1 byte sequentially until we reach \r, cut off last 2bytes (CRLF), return string and # of bytes
 func (r *Resp) readLine() (line []byte, n int, err error) {
 	for {
 		b, err := r.reader.ReadByte()
