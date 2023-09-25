@@ -1,4 +1,4 @@
-package RespRead
+package RespReadWrite
 
 import (
 	"bufio"

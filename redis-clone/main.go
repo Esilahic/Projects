@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net"
 
-	RespRead "github.com/Esilahic/Projects/Redis-clone/Resp-Reader"
+	RespReadWrite "github.com/Esilahic/Projects/Redis-clone/Resp-ReaderWriter"
 )
 
 func main() {
@@ -30,7 +30,7 @@ func main() {
 	defer conn.Close()
 
 	for {
-		resp := RespRead.NewResp(conn)
+		resp := RespReadWrite.NewResp(conn)
 		value, err := resp.Read()
 		if err != nil {
 			fmt.Println(err)
