@@ -1,5 +1,5 @@
-// this will work on windows with WSL however its more of a headache than i expected.
-// i will finish the project and figure out how to get this to work even better
+// WSL isn't needed. I used the archived Microsoft Redis app
+// https://github.com/microsoftarchive/redis
 package main
 
 import (
@@ -19,7 +19,7 @@ func main() {
 		return
 	}
 
-	// Listen for port 6379 return err if unsuccessful
+	// Listen for port 6379
 	conn, err := l.Accept()
 	if err != nil {
 		fmt.Println(err)
@@ -45,7 +45,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		// ignore request and return PONG
+		// ignore request and return OK
 		conn.Write([]byte("+OK\r\n"))
 	}
 }
