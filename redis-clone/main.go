@@ -4,9 +4,9 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"net"
-	"os"
+
+	RespRead "github.com/Esilahic/Projects/Redis-clone/Resp-Reader"
 )
 
 func main() {
@@ -29,23 +29,37 @@ func main() {
 	// closing connection
 	defer conn.Close()
 
-	// infinite loop to read client msg, then respond with OK
 	for {
-		buf := make([]byte, 1024)
-
-		// reading client message
-		_, err := conn.Read(buf)
+		resp := RespRead.NewResp(conn)
+		value, err := resp.Read()
 		if err != nil {
-			// if error is true then we reach end of file and terminate loop
-			if err == io.EOF {
-				break
-			}
-			// otherwise print error and exit with status 1
-			fmt.Println("error reading command: ", err.Error())
-			os.Exit(1)
+			fmt.Println(err)
+			return
 		}
+		fmt.Println(value)
 
-		// ignore request and return OK
+		// ignore and send back OK
 		conn.Write([]byte("+OK\r\n"))
 	}
+
 }
+
+// // infinite loop to read client msg, then respond with OK
+// for {
+// 	buf := make([]byte, 1024)
+
+// 	// reading client message
+// 	_, err := conn.Read(buf)
+// 	if err != nil {
+// 		// if error is true then we reach end of file and terminate loop
+// 		if err == io.EOF {
+// 			break
+// 		}
+// 		// otherwise print error and exit with status 1
+// 		fmt.Println("error reading command: ", err.Error())
+// 		os.Exit(1)
+// 	}
+
+// 	// ignore request and return OK
+// 	conn.Write([]byte("+OK\r\n"))
+// }
