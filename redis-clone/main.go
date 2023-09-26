@@ -5,8 +5,6 @@ package main
 import (
 	"fmt"
 	"net"
-
-	RespReadWrite "github.com/Esilahic/Projects/Redis-clone/Resp-ReaderWriter"
 )
 
 func main() {
@@ -30,16 +28,17 @@ func main() {
 	defer conn.Close()
 
 	for {
-		resp := RespReadWrite.NewResp(conn)
+		resp := NewResp(conn)
 		value, err := resp.Read()
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		fmt.Println(value)
+		_ = value
 
-		// ignore and send back OK
-		conn.Write([]byte("+OK\r\n"))
+		writer := NewWriter(conn)
+
+		writer.Write(Value{typ: "string", str: "OK"})
 	}
 
 }
