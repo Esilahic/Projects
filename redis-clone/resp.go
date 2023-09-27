@@ -20,7 +20,6 @@ const (
 type Value struct {
 	typ   string  // used to determine data type carried by redis value
 	str   string  // simple string
-	num   int     // int
 	bulk  string  // bulk strings
 	array []Value // arrays
 }
