@@ -7,13 +7,13 @@ build:
 
 run: build
 	@echo Staring Celeritas...
-	@.\tmp\${BINARY_NAME} &
+	@./tmp/${BINARY_NAME} &
 	@echo Celeritas started!
 
 clean:
 	@echo Cleaning...
 	@go clean
-	@del .\tmp\${BINARY_NAME}
+	@del ./tmp/${BINARY_NAME}
 	@echo Cleaned!
 
 test:
