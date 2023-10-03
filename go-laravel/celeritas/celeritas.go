@@ -20,7 +20,7 @@ type Celeritas struct {
 	Version  string
 	ErrorLog *log.Logger
 	InfoLog  *log.Logger
-	rootPath string
+	RootPath string
 	Routes   *chi.Mux
 	config   config
 }
@@ -58,7 +58,7 @@ func (c *Celeritas) New(rootPath string) error {
 	c.ErrorLog = errorLog
 	c.Debug, _ = strconv.ParseBool(os.Getenv("DEBUG"))
 	c.Version = version
-	c.rootPath = rootPath
+	c.RootPath = rootPath
 	c.Routes = c.routes().(*chi.Mux)
 
 	c.config = config{
