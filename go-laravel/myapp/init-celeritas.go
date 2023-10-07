@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"myapp/handlers"
 	"os"
 
 	celeritas "github.com/Esilahic/Projects/go-laravel"
@@ -22,10 +23,16 @@ func initApplication() *application {
 
 	cel.AppName = "myapp"
 
-	cel.InfoLog.Println("Debug is set to", cel.Debug)
-
-	app := &application{
+	MyHandlers := &handlers.Handlers{
 		App: cel,
 	}
+
+	app := &application{
+		App:      cel,
+		Handlers: MyHandlers,
+	}
+
+	app.App.Routes = app.routes()
+
 	return app
 }

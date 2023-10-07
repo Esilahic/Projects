@@ -1,9 +1,14 @@
 package main
 
-import celeritas "github.com/Esilahic/Projects/go-laravel"
+import (
+	"myapp/handlers"
+
+	celeritas "github.com/Esilahic/Projects/go-laravel"
+)
 
 type application struct {
-	App *celeritas.Celeritas
+	App      *celeritas.Celeritas
+	Handlers *handlers.Handlers
 }
 
 func main() {
