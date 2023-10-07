@@ -68,7 +68,7 @@ func (c *Celeritas) New(rootPath string) error {
 		renderer: os.Getenv("RENDERER"),
 	}
 
-	c.Render = c.CreateRenderer(c)
+	c.CreateRenderer()
 
 	return nil
 }
@@ -120,12 +120,12 @@ func (c *Celeritas) startLoggers() (*log.Logger, *log.Logger) {
 	return infoLog, errorLog
 }
 
-func (c *Celeritas) CreateRenderer(cel *Celeritas) *render.Render {
+func (c *Celeritas) CreateRenderer() {
 	myRenderer := render.Render{
-		Renderer: cel.config.renderer,
-		RootPath: cel.RootPath,
-		Port:     cel.config.port,
+		Renderer: c.config.renderer,
+		RootPath: c.RootPath,
+		Port:     c.config.port,
 	}
 
-	return &myRenderer
+	c.Render = &myRenderer
 }
