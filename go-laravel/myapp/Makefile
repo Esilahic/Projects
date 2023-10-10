@@ -16,6 +16,12 @@ clean:
 	@del ./tmp/${BINARY_NAME}
 	@echo Cleaned!
 
+c: 
+	docker-compose up -d
+
+cs:
+	docker-compose down
+
 test:
 	@echo Testing...
 	@go test ./...
